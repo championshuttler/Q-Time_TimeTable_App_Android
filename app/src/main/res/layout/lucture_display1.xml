@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvEvName"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        />
+
+    <Button
+        android:text="LIKE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEvName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btnLike" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnLike"
+        android:layout_toRightOf="@+id/btnLike"
+        android:layout_toEndOf="@+id/btnLike"
+        android:layout_marginBottom="13dp"
+        android:id="@+id/tvLikes" />
+
+    <Button
+        android:text="DISLIKE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEvName"
+        android:layout_toRightOf="@+id/tvLikes"
+        android:layout_toEndOf="@+id/tvLikes"
+        android:id="@+id/btnDis" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvLikes"
+        android:layout_toRightOf="@+id/btnDis"
+        android:layout_toEndOf="@+id/btnDis"
+        android:id="@+id/tvDis" />
+
+</RelativeLayout>
