@@ -21,15 +21,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
+    private static final String TAG = "LoginActivity";
+    private static int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiCLient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private static int RC_SIGN_IN=0;
-    private static final String TAG = "LoginActivity";
 
+
+    private DatabaseReference mDatabase, mPutUser;
 
 
 
@@ -37,6 +41,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -46,6 +53,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 if (user != null) {
                     Log.d(TAG, "onAuthStateChanged: AUTH" + user.getDisplayName());
+
+//                    mPutUser=mDatabase.push();
+//
+//
+//
+//                    User user1 = new User(user.getDisplayName(), user.getEmail(), user.getUid());
+//
+//                    mPutUser.setValue(user1);
+
+
+
+
+
+
+
                 } else {
                     Log.d(TAG, "onAuthStateChanged: AuthCancel" + "User Logged Out");
                 }
@@ -99,12 +121,43 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             if(result.isSuccess()){
                 GoogleSignInAccount account= result.getSignInAccount();
                 FirebaseAuthWithGoogle(account);
-                Intent i
+
+
+                userToDB();
+
+
+
+
+                Intent i = new Intent(this, MainActivity.class);
+
+
+
+
+                startActivityForResult(i, 1);
             }
             else{
                 Log.d(TAG, "onActivityResult: LOGIN FAILED!");
             }
         }
+    }
+
+    private void userToDB() {
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+
+
+        mPutUser=mDatabase.child("users").child(encodeEmail(user.getEmail()));
+
+
+
+        User user1 = new User(user.getDisplayName(), user.getEmail(), user.getUid());
+
+        mPutUser.setValue(user1);
+
+    }
+    public static String encodeEmail(String userEmail) {
+        return userEmail.replace(".", ",");
     }
 
     private void FirebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -123,10 +176,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
             }
+            }
+
+
         });
-
-
     }
+
 
     private void signout(){
         FirebaseAuth.getInstance().signOut();
