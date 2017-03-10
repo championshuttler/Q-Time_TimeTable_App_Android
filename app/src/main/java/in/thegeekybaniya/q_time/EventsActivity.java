@@ -6,16 +6,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.firebase.ui.database.ChangeEventListener;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -31,6 +31,11 @@ public class EventsActivity extends Fragment {
 
     DatabaseReference mrootRef= FirebaseDatabase.getInstance().getReference();
     DatabaseReference mEventRef= mrootRef.child("events");
+    private static final String TAG = "EventsActivity";
+     FirebaseAuth mAuth;
+
+    FirebaseUser user ;
+
 
 
 
@@ -40,54 +45,95 @@ public class EventsActivity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view=inflater.inflate(R.layout.events_activity, container, false);
+        final View view = inflater.inflate(R.layout.events_activity, container, false);
 
-        mEventRef.addValueEventListener(new ValueEventListener() {
+        mAuth=FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+
+
+
+
+
+        lv= (ListView) view.findViewById(R.id.lv2);
+
+
+        FirebaseListAdapter<Events> fireBaseListAdapter= new FirebaseListAdapter<Events>(
+                getActivity(),
+                Events.class,
+                R.layout.lucture_display1,
+                mEventRef
+        ) {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                eventList = new ArrayList<>();
-
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                    eventList.add(child.getValue(Events.class));
-
-
-                    lv=(ListView) view.findViewById(R.id.lv2);
-
-                    EventAdapter evAdp=new EventAdapter();
-
-                    lv.setAdapter(evAdp);
-
-
-
-                }
-
-
+            protected void onChildChanged(ChangeEventListener.EventType type, int index, int oldIndex) {
+                super.onChildChanged(type, index, oldIndex);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            protected void onDataChanged() {
+                super.onDataChanged();
+            }
+
+            @Override
+            protected void populateView (View v, final Events model, int position) {
+
+
+//                DataSnapshot
+
+
+                final TextView eventTv, likeTv, dislikeTv;
+
+                Button likeBtn, disBtn;
+
+
+                eventTv= (TextView) v.findViewById(R.id.tvEvName);
+                likeTv=(TextView) v.findViewById(R.id.tvLikes);
+                dislikeTv=(TextView) v.findViewById(R.id.tvDis);
+
+                likeBtn= (Button) v.findViewById(R.id.btnLike);
+
+                disBtn= (Button) v.findViewById(R.id.btnDis);
+
+
+                eventTv.setText(model.getName());
+                likeTv.setText(Integer.toString(model.getLikes()));
+                dislikeTv.setText(Integer.toString(model.getDislikes()));
+
+                likeBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                       if(!(model.likeList.contains(user.getEmail()))){
+
+                        model.likePressed();
+
+                        mEventRef.child(model.getKey()).child("likes").setValue(model.getLikes());
+                           mEventRef.child(model.getKey()).child("likeList").push().setValue(user.getEmail());
+
+
+
+                    }
+                    }
+                });
+
+                disBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        model.dislikePressed();
+                        mEventRef.child(model.getKey()).child("dislikes").setValue(model.getDislikes());
+
+
+                    }
+                });
+
+
+
+
 
             }
-        });
+        };
 
-
-
-
-////        btnt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Intent i = new Intent(getActivity(), LoginActivity.class);
-//            }
-//        });
-
-
-
-
-
-
-
+        lv.setAdapter(fireBaseListAdapter);
 
 
 
@@ -97,78 +143,160 @@ public class EventsActivity extends Fragment {
 
 
         return view;
-
     }
 
-    private class EventAdapter extends BaseAdapter {
-
-
-        @Override
-        public int getCount() {
-            return eventList.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return eventList.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View v, ViewGroup viewGroup) {
-
-            LayoutInflater li= getActivity().getLayoutInflater();
-
-            final Events event= (Events) getItem(i);
-            final EventHolder evholder;
-
-                if(v==null){
-                    v= li.inflate(R.layout.lucture_display1, null);
-
-                    evholder = new EventHolder();
-                    evholder.tv1= (TextView) v.findViewById(R.id.tvEvName);
-                    evholder.tv2= (TextView) v.findViewById(R.id.tvLikes);
-                    evholder.like= (Button) v.findViewById(R.id.btnLike);
-                    evholder.dislike=(Button) v.findViewById(R.id.btnDis);
-                    evholder.tv3= (TextView) v.findViewById(R.id.tvDis);
-
-                    v.setTag(evholder);
-
-
-
-                }else
-                evholder= (EventHolder) v.getTag();
-
-//            evholder.tv1.setText(event.getName());
-//            evholder.tv2.setText( event.getLikes());
-//            evholder.tv3.setText(event.getDislikes());
-
-            evholder.like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
 
 
 
-                }
-            });
 
-
-
-
-            return v;
-        }
-    }
-
-    private class EventHolder {
-        TextView tv1, tv2,tv3;
-        Button like, dislike;
-
-        boolean likestate=false, dislikestate=false;
-
-    }
 }
+
+//        mEventRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                eventList = new ArrayList<>();
+//
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//
+//                    eventList.add(child.getValue(Events.class));
+//
+//
+//                    lv=(ListView) view.findViewById(R.id.lv2);
+//
+//                    EventAdapter evAdp=new EventAdapter();
+//
+//                    lv.setAdapter(evAdp);
+//
+//
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+//
+//
+//////        btnt.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+//////                Intent i = new Intent(getActivity(), LoginActivity.class);
+////            }
+////        });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        return view;
+//
+//    }
+//
+//    private class EventAdapter extends BaseAdapter {
+//
+//
+//        @Override
+//        public int getCount() {
+//            return eventList.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int i) {
+//            return eventList.get(i);
+//        }
+//
+//        @Override
+//        public long getItemId(int i) {
+//            return 0;
+//        }
+//
+//        @Override
+//        public View getView(int i, View v, ViewGroup viewGroup) {
+//
+//            LayoutInflater li= getActivity().getLayoutInflater();
+//
+//            final Events event= (Events) getItem(i);
+//            final EventHolder evholder;
+//
+//                if(v==null){
+//                    v= li.inflate(R.layout.lucture_display1, null);
+//
+//                    evholder = new EventHolder();
+//                    evholder.tv1= (TextView) v.findViewById(R.id.tvEvName);
+//                    evholder.tv2= (TextView) v.findViewById(R.id.tvLikes);
+//                    evholder.like= (Button) v.findViewById(R.id.btnLike);
+//                    evholder.dislike=(Button) v.findViewById(R.id.btnDis);
+//                    evholder.tv3= (TextView) v.findViewById(R.id.tvDis);
+//
+//                    v.setTag(evholder);
+//
+//
+//
+//                }else
+//                evholder= (EventHolder) v.getTag();
+//
+//            evholder.tv1.setText(event.getName());
+//            evholder.tv2.setText( Integer.toString(event.getLikes()));
+//            evholder.tv3.setText(Integer.toString(event.getDislikes()));
+//
+//            evholder.like.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    event.likePressed();
+//
+//                    Log.d(TAG, "onClick: "+ event.getLikes());
+//                    evholder.tv2.setText(Integer.toString(event.getLikes()));
+//
+//
+//
+//
+//
+//                }
+//            });
+//
+//            evholder.dislike.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    event.dislikePressed();
+//
+//
+//                    Log.d(TAG, "onClick: "+ event.getDislikes());
+//                    evholder.tv3.setText( Integer.toString(event.getDislikes()));
+//
+//
+//                }
+//            });
+//
+//
+//
+//
+//            return v;
+//        }
+//    }
+//
+//    private class EventHolder {
+//        TextView tv1, tv2,tv3;
+//        Button like, dislike;
+//
+//
+//    }

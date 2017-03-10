@@ -1,18 +1,32 @@
 package in.thegeekybaniya.q_time;
 
+import java.util.ArrayList;
+
 /**
  * Created by Kabir on 28/01/2017.
  */
 
 public class Events {
     int likes, dislikes;
-    String name;
+    String name, key;
+    ArrayList<String> likeList, dislikeList;
+
+
+
+
 
     public Events() {
     }
 
-    public int getLikes() {
+    public Events(int likes, int dislikes, String name, ArrayList<String> likes1, ArrayList<String> dislikes1) {
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.name = name;
+        likeList = likes1;
+        dislikeList = dislikes1;
+    }
 
+    public int getLikes() {
         return likes;
     }
 
@@ -36,10 +50,35 @@ public class Events {
         this.name = name;
     }
 
-    public Events(int likes, int dislikes, String name) {
+    public String getKey() {
+        return key;
+    }
 
-        this.likes = likes;
-        this.dislikes = dislikes;
-        this.name = name;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public ArrayList<String> getLikeList() {
+        return likeList;
+    }
+
+    public void setLikeList(ArrayList<String> likeList) {
+        this.likeList = likeList;
+    }
+
+    public ArrayList<String> getDislikeList() {
+        return dislikeList;
+    }
+
+    public void setDislikeList(ArrayList<String> dislikeList) {
+        this.dislikeList = dislikeList;
+    }
+
+    public void likePressed(){
+        this.likes+=1;
+    }
+
+    public void dislikePressed(){
+        this.dislikes+=1;
     }
 }
