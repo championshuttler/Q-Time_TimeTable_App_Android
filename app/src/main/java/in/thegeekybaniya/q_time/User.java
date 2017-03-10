@@ -29,6 +29,11 @@ public class User {
         this.uid = uid;
     }
 
+    public String getEncodedMail(){
+        return this.email.replace(".", ",");
+
+    }
+
 
 
     String name, email, uid;

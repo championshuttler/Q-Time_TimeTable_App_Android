@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseAuthWithGoogle(account);
 
 
-                userToDB();
+//                userToDB();
 
 
 
@@ -134,6 +134,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
                 startActivityForResult(i, 1);
+//                userToDB();
+
             }
             else{
                 Log.d(TAG, "onActivityResult: LOGIN FAILED!");
@@ -169,7 +171,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Log.d(TAG, "onComplete: AUTH"+ " Signin with Creds COmplete"+ task.isSuccessful());
 
 
-
+            userToDB();
 
                 if (!task.isSuccessful()) {
                     Log.w(TAG, "signInWithCredential", task.getException());

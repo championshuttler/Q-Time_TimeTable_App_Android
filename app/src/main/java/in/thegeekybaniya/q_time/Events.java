@@ -74,11 +74,42 @@ public class Events {
         this.dislikeList = dislikeList;
     }
 
+    public void likePressedFirst(){
+        this.likes+=1;
+
+    }
+
+    public Events(String name) {
+        this.name = name;
+        this.likes=0;
+        this.dislikes=0;
+
+        ArrayList<String> arrayList =new ArrayList<>();
+        arrayList.add("abcd");
+
+        this.likeList=arrayList;
+        this.dislikeList=arrayList;
+
+
+
+
+
+
+    }
+
+    public void dislikePressedFirst(){
+        this.dislikes+=1;
+    }
     public void likePressed(){
         this.likes+=1;
+        this.dislikes-=1;
+
     }
 
     public void dislikePressed(){
         this.dislikes+=1;
+        this.likes-=1;
     }
+
+
 }
