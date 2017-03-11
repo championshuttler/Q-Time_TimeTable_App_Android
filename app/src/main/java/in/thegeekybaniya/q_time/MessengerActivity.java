@@ -17,6 +17,8 @@ import android.widget.TextView;
 public class MessengerActivity extends Fragment {
 
 
+
+
     Button send;
     TextView tv;
     EditText et;

@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Kabir on 28/01/2017.
@@ -28,7 +29,11 @@ public class ScheduleActivity extends Fragment {
 
 
     DatabaseReference mrootRef= FirebaseDatabase.getInstance().getReference();
-    DatabaseReference mDayRef= mrootRef.child("days").child("monday");
+    DatabaseReference mDayRef= mrootRef.child("days");
+    Calendar calendar = Calendar.getInstance();
+    int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+
 
 
 
@@ -44,6 +49,41 @@ public class ScheduleActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View v=inflater.inflate(R.layout.schedule_activity, container,false);
+
+
+        switch (day) {
+            case Calendar.SUNDAY:
+                mDayRef=mDayRef.child("monday");
+                break;
+                // Current day is Sunday
+
+            case Calendar.MONDAY:
+                mDayRef=mDayRef.child("monday");
+                break;
+                // Current day is Monday
+
+            case Calendar.TUESDAY:
+                mDayRef= mDayRef.child("tuesday");
+                break;
+
+            case Calendar.WEDNESDAY:
+                mDayRef= mDayRef.child("wednesday");
+                break;
+
+            case Calendar.THURSDAY:
+                mDayRef= mDayRef.child("thursday");
+                break;
+
+            case Calendar.FRIDAY:
+                mDayRef= mDayRef.child("friday");
+                break;
+
+            case Calendar.SATURDAY:
+                mDayRef= mDayRef.child("monday");
+                break;
+                // etc.
+        }
+
 
         mDayRef.addValueEventListener(new ValueEventListener() {
             @Override
