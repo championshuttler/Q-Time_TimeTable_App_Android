@@ -16,7 +16,7 @@ public class AddEvent extends AppCompatActivity {
 
     Button btnAdd;
     Events event ;
-    DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mData = FirebaseDatabase.getInstance().getReference().child("events");
 
     String key;
 
@@ -39,9 +39,12 @@ public class AddEvent extends AppCompatActivity {
             public void onClick(View view) {
                 event =new Events(etEventName.getText().toString());
 
-                key=mData.child("events").push().getKey();
+                key=mData.push().getKey();
 
-                mData.setValue(event);
+
+                event.setKey(key);
+
+                mData.child(key).setValue(event);
 
                 finish();
 
