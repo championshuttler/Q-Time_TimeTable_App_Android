@@ -12,6 +12,12 @@ public class Message {
 
     Map<String,String> time;
 
+    public Message(String name, String enEmail, String message) {
+        this.name = name;
+        this.enEmail = enEmail;
+        this.message = message;
+    }
+
     public Message(String name, String enEmail, String message, Map<String, String> time) {
         this.name = name;
         this.enEmail = enEmail;

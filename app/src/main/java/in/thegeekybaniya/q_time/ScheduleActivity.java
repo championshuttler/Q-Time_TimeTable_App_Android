@@ -26,18 +26,19 @@ import java.util.Calendar;
  */
 
 
+
 public class ScheduleActivity extends Fragment {
 
-    FirebaseDatabase mDB= FirebaseDatabase.getInstance();
+    static boolean calledAlready = false;
+
+
+//    FirebaseDatabase mDB= FirebaseDatabase.getInstance();
 
 
 
 
 
-    DatabaseReference mrootRef=mDB.getReference();
 
-
-    DatabaseReference mDayRef= mrootRef.child("days");
     Calendar calendar = Calendar.getInstance();
     int day = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -56,7 +57,25 @@ public class ScheduleActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mDB.setPersistenceEnabled(true);
+//        mDB.setPersistenceEnabled(true);
+//
+
+
+//        if (!calledAlready)
+//        {
+//            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//            calledAlready = true;
+//        }
+//
+        FirebaseDatabase mDB = FirebaseDatabase.getInstance();
+//
+        DatabaseReference mrootRef=mDB.getReference();
+
+
+
+        DatabaseReference mDayRef= mrootRef.child("days");
+
+
 
 
 
@@ -191,8 +210,13 @@ public class ScheduleActivity extends Fragment {
 //            lvHolder.tv2.setText("Hello");
 //            lvHolder.tv3.setText("Hello");
 
+
+
             return view;
+
         }
+
+
     }
 
     private class LectureViewHolder {
