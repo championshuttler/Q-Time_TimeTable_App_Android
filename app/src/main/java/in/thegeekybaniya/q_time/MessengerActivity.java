@@ -8,7 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by Kabir on 28/01/2017.
@@ -16,7 +20,11 @@ import android.widget.TextView;
 
 public class MessengerActivity extends Fragment {
 
+        FirebaseDatabase mDB= FirebaseDatabase.getInstance();
 
+    DatabaseReference mMsgRef;
+
+    ListView lv;
 
 
     Button send;
@@ -29,15 +37,27 @@ public class MessengerActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+
+        mDB.setPersistenceEnabled(true);
+
+        mMsgRef=mDB.getReference();
+
+        mMsgRef.child("messages");
+
+
+
         final String[] message = {null};
 
 
         View v= inflater.inflate(R.layout.messenger_activity, container, false);
 
 
-        send= (Button) v.findViewById(R.id.btn);
-        tv= (TextView) v.findViewById(R.id.tev);
-        et= (EditText) v.findViewById(R.id.edt);
+        lv= (ListView) v.findViewById(R.id.lv);
+
+
+        send= (Button) v.findViewById(R.id.button2);
+        et= (EditText) v.findViewById(R.id.editText2);
 
 
 
@@ -53,6 +73,9 @@ public class MessengerActivity extends Fragment {
 
             }
         });
+
+
+
 
 
 

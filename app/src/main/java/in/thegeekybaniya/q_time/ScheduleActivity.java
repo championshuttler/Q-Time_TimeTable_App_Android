@@ -10,11 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,9 +28,15 @@ import java.util.Calendar;
 
 public class ScheduleActivity extends Fragment {
 
+    FirebaseDatabase mDB= FirebaseDatabase.getInstance();
 
 
-    DatabaseReference mrootRef= FirebaseDatabase.getInstance().getReference();
+
+
+
+    DatabaseReference mrootRef=mDB.getReference();
+
+
     DatabaseReference mDayRef= mrootRef.child("days");
     Calendar calendar = Calendar.getInstance();
     int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -47,6 +55,10 @@ public class ScheduleActivity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        mDB.setPersistenceEnabled(true);
+
+
 
         final View v=inflater.inflate(R.layout.schedule_activity, container,false);
 

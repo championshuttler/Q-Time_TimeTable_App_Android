@@ -2,26 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="10">
 
-    <TextView
+    <ListView
+        android:id="@+id/lv"
         android:layout_width="match_parent"
-        android:id="@+id/tev"
-        android:layout_weight="0.74"
-        android:layout_height="175dp" />
+        android:layout_height="0dp"
+        android:layout_weight="9" />
 
-    <EditText
+    <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Write Your Message Here...."
-        android:ems="10"
-        android:id="@+id/edt" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="8"
+        >
 
-    <Button
-        android:text="Send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn" />
 
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:ems="10"
+            android:hint="Write Your Message Here...."
+
+            />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:layout_weight="2"
+            />
+
+    </LinearLayout>
 </LinearLayout>
