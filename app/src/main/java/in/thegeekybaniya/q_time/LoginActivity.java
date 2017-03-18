@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -34,6 +35,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private DatabaseReference mDatabase, mPutUser;
 
+    Button timeTable;
+
 
 
     @Override
@@ -42,6 +45,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_login);
 
         mDatabase = MyDatabaseUtil.getDatabase().getReference();
+
+        timeTable= (Button) findViewById(R.id.timeTable);
+
+        timeTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i= new Intent(LoginActivity.this, TimeTable.class);
+
+                startActivity(i);
+            }
+        });
+
+
 
 
         mAuth = FirebaseAuth.getInstance();

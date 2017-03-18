@@ -31,6 +31,8 @@ public class ScheduleActivity extends Fragment {
 
     static boolean calledAlready = false;
 
+    TextView tv;
+
 
 //    FirebaseDatabase mDB= FirebaseDatabase.getInstance();
 
@@ -81,36 +83,51 @@ public class ScheduleActivity extends Fragment {
 
         final View v=inflater.inflate(R.layout.schedule_activity, container,false);
 
+        tv= (TextView) v.findViewById(R.id.textView2);
 
         switch (day) {
             case Calendar.SUNDAY:
                 mDayRef=mDayRef.child("monday");
+                tv.setText("Day: Monday");
+
                 break;
                 // Current day is Sunday
 
             case Calendar.MONDAY:
                 mDayRef=mDayRef.child("monday");
+                tv.setText("Day: Monday");
+
                 break;
                 // Current day is Monday
 
             case Calendar.TUESDAY:
                 mDayRef= mDayRef.child("tuesday");
+                tv.setText("Day: Tuesday");
+
                 break;
 
             case Calendar.WEDNESDAY:
                 mDayRef= mDayRef.child("wednesday");
+                tv.setText("Day: Wednesday");
+
                 break;
 
             case Calendar.THURSDAY:
                 mDayRef= mDayRef.child("thursday");
+                tv.setText("Day: Thursday");
+
                 break;
 
             case Calendar.FRIDAY:
                 mDayRef= mDayRef.child("friday");
+                tv.setText("Day: Friday");
+
                 break;
 
             case Calendar.SATURDAY:
                 mDayRef= mDayRef.child("monday");
+                tv.setText("Day: Monday");
+
                 break;
                 // etc.
         }
