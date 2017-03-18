@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 
 /**
  * Created by Kabir on 28/01/2017.
@@ -55,7 +54,7 @@ FirebaseAuth mAuth;
 
         mMsgRef=mMsgRef.child("messages");
 
-        mMsgRef.orderByKey();
+//        mMsgRef.orderByKey();
 
 
 
@@ -81,7 +80,7 @@ FirebaseAuth mAuth;
             if(!(et.getText().toString().isEmpty()))  {
 
 
-                Message m = new Message(user.getDisplayName(), user.getEmail().replace('.',','), et.getText().toString(), ServerValue.TIMESTAMP);
+                Message m = new Message(user.getDisplayName(), user.getEmail().replace('.',','), et.getText().toString());
 
                 mMsgRef.push().setValue(m);
 

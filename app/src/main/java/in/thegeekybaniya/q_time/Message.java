@@ -1,7 +1,5 @@
 package in.thegeekybaniya.q_time;
 
-import java.util.Map;
-
 /**
  * Created by Kabir on 11/03/2017.
  */
@@ -10,7 +8,8 @@ public class Message {
 
     String name,enEmail, message;
 
-    Map<String,String> time;
+//   @Nullable
+//    Map<String,String> time;
 
     public Message(String name, String enEmail, String message) {
         this.name = name;
@@ -18,12 +17,12 @@ public class Message {
         this.message = message;
     }
 
-    public Message(String name, String enEmail, String message, Map<String, String> time) {
-        this.name = name;
-        this.enEmail = enEmail;
-        this.message = message;
-        this.time = time;
-    }
+//    public Message(String name, String enEmail, String message, Map<String, String> time) {
+//        this.name = name;
+//        this.enEmail = enEmail;
+//        this.message = message;
+//        this.time = time;
+//    }
 
     public Message() {
 
@@ -53,11 +52,11 @@ public class Message {
         this.message = message;
     }
 
-    public Map<String, String> getTime() {
-        return time;
-    }
-
-    public void setTime(Map<String, String> time) {
-        this.time = time;
-    }
+//    public Map<String, String> getTime() {
+//        return time;
+//    }
+//
+//    public void setTime(Map<String, String> time) {
+//        this.time = time;
+//    }
 }
