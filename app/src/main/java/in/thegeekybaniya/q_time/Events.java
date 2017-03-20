@@ -79,6 +79,18 @@ public class Events {
 
     }
 
+    @Override
+    public String toString() {
+        return "Events{" +
+                "likes=" + likes +
+                ", dislikes=" + dislikes +
+                ", name='" + name + '\'' +
+                ", key='" + key + '\'' +
+                ", likeList=" + likeList +
+                ", dislikeList=" + dislikeList +
+                '}';
+    }
+
     public Events(String name) {
         this.name = name;
         this.likes=0;

@@ -71,6 +71,16 @@ FirebaseAuth mAuth;
         send= (Button) v.findViewById(R.id.button2);
         et= (EditText) v.findViewById(R.id.editText2);
 
+//        et.setOnTouchListener(new View.OnTouchListener() {
+
+//            public boolean onTouch(View v, MotionEvent event) {
+//                et.requestLayout();
+//               getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//
+//                return false;
+//            }
+//        });
+
 
 
         send.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +93,8 @@ FirebaseAuth mAuth;
                 Message m = new Message(user.getDisplayName(), user.getEmail().replace('.',','), et.getText().toString());
 
                 mMsgRef.push().setValue(m);
+
+                et.setText("");
 
 
             }
@@ -109,7 +121,7 @@ FirebaseAuth mAuth;
                 l2= (TextView) v.findViewById(android.R.id.text2);
 
 
-                if(user.getEmail().replace('.',',')==model.getEnEmail()){
+                if((user.getEmail().replace('.',',')).equals(model.getEnEmail())){
                     l1.setText("You");
 
 

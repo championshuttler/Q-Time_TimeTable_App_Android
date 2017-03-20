@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -73,7 +75,7 @@ public class EventsActivity extends Fragment {
         lv= (ListView) view.findViewById(R.id.lv2);
 
 
-        FirebaseListAdapter<Events> fireBaseListAdapter= new FirebaseListAdapter<Events>(
+        final FirebaseListAdapter<Events> fireBaseListAdapter= new FirebaseListAdapter<Events>(
                 getActivity(),
                 Events.class,
                 R.layout.lucture_display1,
@@ -199,6 +201,39 @@ public class EventsActivity extends Fragment {
         };
 
         lv.setAdapter(fireBaseListAdapter);
+        lv.setItemsCanFocus(true);
+
+        lv.setClickable(true);
+        lv.setFocusable(true);
+
+        AdapterView.OnItemClickListener itemCLickListener = new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Events model=fireBaseListAdapter.getItem(position);
+
+                Log.d(TAG, "onItemClick: "+ model.toString());
+
+                Intent i = new Intent(getActivity(), EventResponse.class);
+
+                i.putStringArrayListExtra("likelist", model.getLikeList());
+                i.putStringArrayListExtra("dislikelist", model.getDislikeList());
+
+                startActivity(i);
+
+
+
+
+            }};
+
+        lv.setOnItemClickListener(itemCLickListener);
+
+        lv.setItemsCanFocus(true);
+
+        lv.setClickable(true);
+
 
 
 

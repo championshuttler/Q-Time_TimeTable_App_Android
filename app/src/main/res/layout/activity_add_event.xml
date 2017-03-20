@@ -15,7 +15,7 @@
         android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="EventName" />
+        android:hint="EventName" />
 
     <Button
         android:id="@+id/addEvent"
