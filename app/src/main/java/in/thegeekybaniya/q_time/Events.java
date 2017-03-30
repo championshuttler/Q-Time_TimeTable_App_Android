@@ -12,7 +12,7 @@ public class Events {
     ArrayList<String> likeList, dislikeList;
 
 
-
+    int report;
 
 
     public Events() {
@@ -24,6 +24,33 @@ public class Events {
         this.name = name;
         likeList = likes1;
         dislikeList = dislikes1;
+    }
+
+    public Events(int likes, int dislikes, String name, String key, ArrayList<String> likeList, ArrayList<String> dislikeList, int report) {
+
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.name = name;
+        this.key = key;
+        this.likeList = likeList;
+        this.dislikeList = dislikeList;
+        this.report = report;
+    }
+
+    public Events(String name) {
+        this.name = name;
+        this.likes = 0;
+        this.dislikes = 0;
+        this.report = 0;
+
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("abcd");
+
+        this.likeList = arrayList;
+        this.dislikeList = arrayList;
+
+
     }
 
     public int getLikes() {
@@ -74,8 +101,8 @@ public class Events {
         this.dislikeList = dislikeList;
     }
 
-    public void likePressedFirst(){
-        this.likes+=1;
+    public void likePressedFirst() {
+        this.likes += 1;
 
     }
 
@@ -91,36 +118,27 @@ public class Events {
                 '}';
     }
 
-    public Events(String name) {
-        this.name = name;
-        this.likes=0;
-        this.dislikes=0;
+    public int getReport() {
+        return report;
+    }
 
-        ArrayList<String> arrayList =new ArrayList<>();
-        arrayList.add("abcd");
+    public void setReport(int report) {
+        this.report = report;
+    }
 
-        this.likeList=arrayList;
-        this.dislikeList=arrayList;
+    public void dislikePressedFirst() {
+        this.dislikes += 1;
+    }
 
-
-
-
-
+    public void likePressed() {
+        this.likes += 1;
+        this.dislikes -= 1;
 
     }
 
-    public void dislikePressedFirst(){
-        this.dislikes+=1;
-    }
-    public void likePressed(){
-        this.likes+=1;
-        this.dislikes-=1;
-
-    }
-
-    public void dislikePressed(){
-        this.dislikes+=1;
-        this.likes-=1;
+    public void dislikePressed() {
+        this.dislikes += 1;
+        this.likes -= 1;
     }
 
 

@@ -1,24 +1,31 @@
 package in.thegeekybaniya.q_time;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.ChangeEventListener;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -28,23 +35,19 @@ import java.util.ArrayList;
 
 public class EventsActivity extends Fragment {
 
+    boolean reporter=false;
+
+    private static final String TAG = "EventsActivity";
     ArrayList<Events> eventList;
     Button btnAddEvent;
+
+    //    FirebaseDatabase mData= FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     ListView lv;
+    DatabaseReference mrootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mEventRef = mrootRef.child("events");
+    FirebaseAuth mAuth;
 
-//    FirebaseDatabase mData= FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
-    DatabaseReference mrootRef= FirebaseDatabase.getInstance().getReference();
-    DatabaseReference mEventRef= mrootRef.child("events");
-    private static final String TAG = "EventsActivity";
-     FirebaseAuth mAuth;
-
-    FirebaseUser user ;
-
-
-
-
-
+    FirebaseUser user;
 
 
     @Nullable
@@ -52,10 +55,10 @@ public class EventsActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.events_activity, container, false);
 
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        btnAddEvent= (Button) view.findViewById(R.id.Button);
+        btnAddEvent = (Button) view.findViewById(R.id.Button);
 
 
         btnAddEvent.setOnClickListener(new View.OnClickListener() {
@@ -68,14 +71,23 @@ public class EventsActivity extends Fragment {
         });
 
 
+        lv = (ListView) view.findViewById(R.id.lv2);
 
 
+        mEventRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
-        lv= (ListView) view.findViewById(R.id.lv2);
-
-
-        final FirebaseListAdapter<Events> fireBaseListAdapter= new FirebaseListAdapter<Events>(
+        final FirebaseListAdapter<Events> fireBaseListAdapter = new FirebaseListAdapter<Events>(
                 getActivity(),
                 Events.class,
                 R.layout.lucture_display1,
@@ -92,7 +104,7 @@ public class EventsActivity extends Fragment {
             }
 
             @Override
-            protected void populateView (View v, final Events model, int position) {
+            protected void populateView(View v, final Events model, int position) {
 
 
 //                DataSnapshot
@@ -100,52 +112,71 @@ public class EventsActivity extends Fragment {
 
                 final TextView eventTv, likeTv, dislikeTv;
 
-                Button likeBtn, disBtn;
+                final ImageButton likeBtn, disBtn;
 
 
-                eventTv= (TextView) v.findViewById(R.id.tvEvName);
-                likeTv=(TextView) v.findViewById(R.id.tvLikes);
-                dislikeTv=(TextView) v.findViewById(R.id.tvDis);
+                eventTv = (TextView) v.findViewById(R.id.tvEvName);
+                likeTv = (TextView) v.findViewById(R.id.tvLikes);
+                dislikeTv = (TextView) v.findViewById(R.id.tvDis);
 
-                likeBtn= (Button) v.findViewById(R.id.btnLike);
+                likeBtn = (ImageButton) v.findViewById(R.id.btnLike);
 
-                disBtn= (Button) v.findViewById(R.id.btnDis);
+                disBtn = (ImageButton) v.findViewById(R.id.btnDis);
 
 
                 eventTv.setText(model.getName());
                 likeTv.setText(Integer.toString(model.getLikes()));
                 dislikeTv.setText(Integer.toString(model.getDislikes()));
 
+                if ((!(model.likeList.contains(user.getEmail().replace('.', ',')))) && (!(model.dislikeList.contains(user.getEmail().replace('.', ','))))) {
+
+//                    disBtn.setBackgroundResource(R.drawable.disliked);
+
+                } else if ((!(model.likeList.contains(user.getEmail().replace('.', ',')))) && ((model.dislikeList.contains(user.getEmail().replace('.', ','))))) {
+
+                    disBtn.setImageResource(R.drawable.disliked);
+                    likeBtn.setImageResource(R.drawable.like);
+
+                } else if (((model.likeList.contains(user.getEmail().replace('.', ',')))) && (!(model.dislikeList.contains(user.getEmail().replace('.', ','))))) {
+                    likeBtn.setImageResource(R.drawable.liked);
+                    disBtn.setImageResource(R.drawable.dislike);
+                }
+
+
                 likeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                       if((!(model.likeList.contains(user.getEmail().replace('.',','))))&&(!(model.dislikeList.contains(user.getEmail().replace('.',','))))){
+                        if ((!(model.likeList.contains(user.getEmail().replace('.', ',')))) && (!(model.dislikeList.contains(user.getEmail().replace('.', ','))))) {
 
-                        model.likePressedFirst();
+                            model.likePressedFirst();
+                            likeBtn.setImageResource(R.drawable.liked);
+                            disBtn.setImageResource(R.drawable.dislike);
 
-                        mEventRef.child(model.getKey()).child("likes").setValue(model.getLikes());
 
-                           mEventRef.child(model.getKey()).child("dislikes").setValue(model.getDislikes());
+                            mEventRef.child(model.getKey()).child("likes").setValue(model.getLikes());
+
+                            mEventRef.child(model.getKey()).child("dislikes").setValue(model.getDislikes());
 
 //                           mEventRef.child(model.getKey()).child("likeList").child(Integer.toString(model.likeList.size()-1)).setValue(user.getEmail().replace('.',','));
-                            model.likeList.add(user.getEmail().replace('.',','));
-                           mEventRef.child(model.getKey()).child("likeList").setValue(model.likeList);
-                           mEventRef.child(model.getKey()).child("dislikeList").setValue(model.dislikeList);
+                            model.likeList.add(user.getEmail().replace('.', ','));
+                            mEventRef.child(model.getKey()).child("likeList").setValue(model.likeList);
+                            mEventRef.child(model.getKey()).child("dislikeList").setValue(model.dislikeList);
 
 
-
-                       }else if ((!(model.likeList.contains(user.getEmail().replace('.',','))))&&((model.dislikeList.contains(user.getEmail().replace('.',',')))))
-                        {
+                        } else if ((!(model.likeList.contains(user.getEmail().replace('.', ',')))) && ((model.dislikeList.contains(user.getEmail().replace('.', ','))))) {
                             model.likePressed();
+                            likeBtn.setImageResource(R.drawable.liked);
+                            disBtn.setImageResource(R.drawable.dislike);
+
 
                             mEventRef.child(model.getKey()).child("likes").setValue(model.getLikes());
 
                             mEventRef.child(model.getKey()).child("dislikes").setValue(model.getDislikes());
 
 //                            mEventRef.child(model.getKey()).child("likeList").child(Integer.toString(model.likeList.size()-1)).setValue(user.getEmail().replace('.',','));
-                            model.dislikeList.remove(user.getEmail().replace('.',','));
-                            model.likeList.add(user.getEmail().replace('.',','));
+                            model.dislikeList.remove(user.getEmail().replace('.', ','));
+                            model.likeList.add(user.getEmail().replace('.', ','));
                             mEventRef.child(model.getKey()).child("likeList").setValue(model.likeList);
                             mEventRef.child(model.getKey()).child("dislikeList").setValue(model.dislikeList);
 
@@ -156,9 +187,12 @@ public class EventsActivity extends Fragment {
                 disBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if((!(model.likeList.contains(user.getEmail().replace('.',','))))&&(!(model.dislikeList.contains(user.getEmail().replace('.',','))))){
+                        if ((!(model.likeList.contains(user.getEmail().replace('.', ',')))) && (!(model.dislikeList.contains(user.getEmail().replace('.', ','))))) {
 
                             model.dislikePressedFirst();
+                            disBtn.setImageResource(R.drawable.disliked);
+                            likeBtn.setImageResource(R.drawable.like);
+
 
                             mEventRef.child(model.getKey()).child("likes").setValue(model.getLikes());
 
@@ -166,25 +200,23 @@ public class EventsActivity extends Fragment {
                             mEventRef.child(model.getKey()).child("dislikes").setValue(model.getDislikes());
 //                            mEventRef.child(model.getKey()).child("dislikeList").child(Integer.toString(model.dislikeList.size()-1)).setValue(user.getEmail().replace('.',','));
 
-                            model.dislikeList.add(user.getEmail().replace('.',','));
+                            model.dislikeList.add(user.getEmail().replace('.', ','));
                             mEventRef.child(model.getKey()).child("dislikeList").setValue(model.dislikeList);
                             mEventRef.child(model.getKey()).child("likeList").setValue(model.likeList);
 
 
-
-
-
-
-
-                        }else if (((model.likeList.contains(user.getEmail().replace('.',','))))&&(!(model.dislikeList.contains(user.getEmail().replace('.',',')))))
-                        {
+                        } else if (((model.likeList.contains(user.getEmail().replace('.', ',')))) && (!(model.dislikeList.contains(user.getEmail().replace('.', ','))))) {
                             model.dislikePressed();
+                            disBtn.setImageResource(R.drawable.disliked);
+                            likeBtn.setImageResource(R.drawable.like);
+
+
                             mEventRef.child(model.getKey()).child("likes").setValue(model.getLikes());
 
                             mEventRef.child(model.getKey()).child("dislikes").setValue(model.getDislikes());
 //                            mEventRef.child(model.getKey()).child("dislikeList").child(Integer.toString(model.dislikeList.size()-1)).setValue(user.getEmail().replace('.',','));
-                            model.likeList.remove(user.getEmail().replace('.',','));
-                            model.dislikeList.add(user.getEmail().replace('.',','));
+                            model.likeList.remove(user.getEmail().replace('.', ','));
+                            model.dislikeList.add(user.getEmail().replace('.', ','));
                             mEventRef.child(model.getKey()).child("dislikeList").setValue(model.dislikeList);
                             mEventRef.child(model.getKey()).child("likeList").setValue(model.likeList);
 
@@ -192,9 +224,6 @@ public class EventsActivity extends Fragment {
 
                     }
                 });
-
-
-
 
 
             }
@@ -212,9 +241,9 @@ public class EventsActivity extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Events model=fireBaseListAdapter.getItem(position);
+                Events model = fireBaseListAdapter.getItem(position);
 
-                Log.d(TAG, "onItemClick: "+ model.toString());
+                Log.d(TAG, "onItemClick: " + model.toString());
 
                 Intent i = new Intent(getActivity(), EventResponse.class);
 
@@ -224,30 +253,79 @@ public class EventsActivity extends Fragment {
                 startActivity(i);
 
 
+            }
+        };
+        AdapterView.OnItemLongClickListener itemLongClickListener = new AdapterView.OnItemLongClickListener() {
 
 
-            }};
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                final Events model = fireBaseListAdapter.getItem(position);
+
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+
+                                if (!reporter){
+
+
+
+
+                                    model.report=model.report + 1;
+                                    reporter=true;
+
+                                }
+
+                                if (model.report>=7){
+                                    mEventRef.child(model.getKey()).removeValue();
+
+                                }
+
+
+
+                                Toast.makeText(getContext(), "Thank You! The Event will be deleted if others feel the same", Toast.LENGTH_LONG).show();
+
+                                mEventRef.child(model.getKey()).child("report").setValue(model.report);
+
+
+                                //Yes button clicked
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+
+
+                                Toast.makeText(getContext(), "Thank You!", Toast.LENGTH_SHORT).show();
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Do You Want to Report Abuse?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+
+
+                return true;
+            }
+        };
+
 
         lv.setOnItemClickListener(itemCLickListener);
+        lv.setOnItemLongClickListener(itemLongClickListener);
 
         lv.setItemsCanFocus(true);
 
         lv.setClickable(true);
 
 
-
-
-
-
-
-
-
         return view;
     }
-
-
-
-
 
 
 }

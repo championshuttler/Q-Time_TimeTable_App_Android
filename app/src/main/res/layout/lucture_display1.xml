@@ -1,57 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
 
-    >
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
     <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/tvEvName"
-        android:textSize="20dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
         android:textAlignment="center"
-        />
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <ImageButton
+        android:background="@null"
+
+        android:id="@+id/btnLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="8dp"
         android:text="LIKE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEvName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/btnLike" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btnDis"
+        app:layout_constraintTop_toBottomOf="@+id/tvEvName"
+        app:srcCompat="@drawable/like" />
 
     <TextView
-        android:text="TextView"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnLike"
-        android:layout_toRightOf="@+id/btnLike"
-        android:layout_toEndOf="@+id/btnLike"
-        android:layout_marginBottom="13dp"
-        android:id="@+id/tvLikes" />
+        android:id="@+id/tvLikes"
+        android:layout_width="49dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:text="01"
+        android:textAlignment="center"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnLike"
+        app:layout_constraintLeft_toRightOf="@+id/btnLike"
+        app:layout_constraintTop_toTopOf="@+id/btnLike" />
 
-    <Button
+    <ImageButton
+        android:background="@null"
+
+        android:id="@+id/btnDis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="0dp"
         android:text="DISLIKE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEvName"
-        android:layout_toRightOf="@+id/tvLikes"
-        android:layout_toEndOf="@+id/tvLikes"
-        android:id="@+id/btnDis" />
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintLeft_toLeftOf="@+id/tvLikes"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnLike"
+        app:srcCompat="@drawable/dislike" />
 
     <TextView
-        android:text="TextView"
+        android:id="@+id/tvDis"
         android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvLikes"
-        android:layout_toRightOf="@+id/btnDis"
-        android:layout_toEndOf="@+id/btnDis"
-        android:id="@+id/tvDis" />
+        android:layout_height="52dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="01"
+        android:textAlignment="center"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnDis"
+        app:layout_constraintLeft_toRightOf="@+id/btnDis"
+        app:layout_constraintTop_toTopOf="@+id/btnDis" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
