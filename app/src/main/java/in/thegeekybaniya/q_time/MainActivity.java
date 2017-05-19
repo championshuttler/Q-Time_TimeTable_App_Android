@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
             switch (position){
                 case 0: ScheduleActivity tab1= new ScheduleActivity();
                     return tab1;
-                case 1: EventsActivity tab2= new EventsActivity();
+                case 1: EventFrag tab2= new EventFrag();
                     return tab2;
                 case 2 : MessengerActivity tab3= new MessengerActivity();
                     return tab3;

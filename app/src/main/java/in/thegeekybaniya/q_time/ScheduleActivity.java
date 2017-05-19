@@ -88,7 +88,7 @@ public class ScheduleActivity extends Fragment {
         switch (day) {
             case Calendar.SUNDAY:
                 mDayRef=mDayRef.child("monday");
-                tv.setText("Day: Monday");
+                tv.setText("Showing TimeTable For: Monday");
 
                 break;
                 // Current day is Sunday
@@ -219,7 +219,7 @@ public class ScheduleActivity extends Fragment {
             }else
                 lvHolder= (LectureViewHolder) view.getTag();
 
-            lvHolder.tv1.setText("Subject:"  + lec.getSubject());
+            lvHolder.tv1.setText(lec.getSubject());
             lvHolder.tv2.setText("Start Time:"+lec.getStartTime() +"  End Time:"+lec.getEndTime() );
             lvHolder.tv3.setText("Teacher:"+ lec.getTeacher()+ "   Room No.: "+ lec.getRoomno() );
 

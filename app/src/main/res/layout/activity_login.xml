@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#5b57ff"
     tools:context="in.thegeekybaniya.q_time.LoginActivity">
 
 
@@ -23,22 +24,21 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="116dp" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="107dp"
-        android:text="Q-Time"
-        android:textSize="50dp" />
-
     <Button
         android:id="@+id/timeTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View Timetable"
         android:layout_above="@+id/sign_in_button"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/transparent_text_effect"
+        android:layout_marginTop="71dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
